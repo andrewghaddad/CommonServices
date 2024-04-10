@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "name": "common-services",
+    "builds": [
+      { "src": "api.js", "use": "@vercel/node" }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "/api.js" }
+    ]
+  }
