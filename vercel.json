@@ -1,5 +1,5 @@
 {
-    "version": 1,
+    "version": 2,
     "name": "common-services",
     "builds": [
       { "src": "api.js", "use": "@vercel/node" }
