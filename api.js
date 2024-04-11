@@ -1,7 +1,7 @@
 const express = require('express');
-const axios = require('axios');
 const cors = require('cors');
 const config = require('./config');
+const { MongoClient } = require('mongodb');
 
 
 const corsOptions = {
@@ -12,24 +12,26 @@ const corsOptions = {
 const app = express();
 
 app.use(cors(corsOptions))
+const client = new MongoClient(config.uri);
 
 app.get('/', (req, res) => {
     res.send('Hello From Common Services!');
 });
 
-app.post('/mileageCalc/data', async (req, res) => {
+app.get('/mileageCalc/data', async (req, res) => {
     try {
-        const requestData = req;
-        const headers  = {
-            'Content-Type': 'application/json',
-            'api-key': config.API_KEY,
-            'Accept': 'application/json'
-        }
-        const response = await axios.post('https://us-east-1.aws.data.mongodb-api.com/app/data-ihtif/endpoint/data/v1/action/find', requestData , { headers });
-
-        const responseData = response.data;
-
-        res.json(responseData);
+        await client.connect();
+        console.log('Connected successfully to server');
+    
+        const db = client.db(config.dbName);
+        const collection = db.collection(config.collection);
+    
+        // Find all documents
+        const docs = await collection.find({}).toArray();
+    
+        console.log('Found the following documents:');
+        console.log(docs);
+        return res.json(docs);
     } catch (error) {
         console.error('Error calling POST API:', error);
         res.status(500).json({ error: 'An error occurred while calling the POST API' });
