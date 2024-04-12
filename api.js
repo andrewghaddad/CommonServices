@@ -31,7 +31,7 @@ app.get('/mileageCalc/data', async (req, res) => {
     
         console.log('Found the following documents:');
         console.log(docs);
-        return res.json(docs);
+        return res.json({ documents: docs });
     } catch (error) {
         console.error('Error calling POST API:', error);
         res.status(500).json({ error: 'An error occurred while calling the POST API' });
