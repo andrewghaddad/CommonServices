@@ -1,7 +1,11 @@
 # example netlify.toml
 [build]
-  command = "node api.js"
+  command = "yarn"
   functions = "netlify/functions"
+  publish = ""
+
+[start]
+  command = "node api.js"
   publish = ""
 
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
